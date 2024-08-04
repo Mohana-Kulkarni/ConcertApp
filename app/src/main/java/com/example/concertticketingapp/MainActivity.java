@@ -1,0 +1,115 @@
+package com.example.concertticketingapp;
+
+import android.os.Bundle;
+
+import com.example.concertticketingapp.model.Category;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.example.concertticketingapp.databinding.ActivityMainBinding;
+
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity {
+
+    private AppBarConfiguration appBarConfiguration;
+    private ActivityMainBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+//        setSupportActionBar(binding.toolbar);
+
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+//        binding.fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+
+        addCategoryView();
+
+
+
+    }
+
+    public void addCategoryView() {
+        HorizontalScrollView categoryScrollView = findViewById(R.id.category_scroll);
+        LinearLayout categoryContainer = new LinearLayout(this);
+        categoryContainer.setOrientation(LinearLayout.HORIZONTAL);
+        categoryScrollView.addView(categoryContainer);
+
+        String[] categories = getResources().getStringArray(R.array.category);
+        for (String categoryName : categories) {
+            String category_img = categoryName.toLowerCase();
+            int resId = getResources().getIdentifier(category_img, "drawable", getPackageName());
+            Category category = new Category(categoryName, category_img);
+
+            LinearLayout categoryItem = (LinearLayout) getLayoutInflater().inflate(R.layout.category_add_layout, null);
+
+            ImageView categoryImg = categoryItem.findViewById(R.id.category_img);
+            TextView categoryNameView = categoryItem.findViewById(R.id.category_name);
+
+            categoryNameView.setText(category.getCategoryName());
+
+            categoryImg.setImageResource(resId);
+
+            categoryContainer.addView(categoryItem);
+
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+}
