@@ -3,6 +3,7 @@ package com.example.concertticketingapp;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import com.example.concertticketingapp.adapter.CategoryGridViewAdapter;
 import com.example.concertticketingapp.adapter.EventAdapter;
 import com.example.concertticketingapp.adapter.PlaceGridViewAdapter;
 import com.example.concertticketingapp.integration.RetrofitClient;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     ProgressDialog mProgressDialog;
     String cityName;
-    GridView cityGrid;
+    GridView cityGrid, categoryGrid;
     CardView cityCard;
     View cityPopup;
     EventAdapter eventAdapter;
@@ -88,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.eventsRecycler);
         addCategoryView();
 
-//        displayCityList();
 
         cityCard = findViewById(R.id.cities);
         cityCard.setOnClickListener(new View.OnClickListener() {
@@ -145,14 +145,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchEventsByCity(String cityName) {
         System.out.println(cityName);
+        HorizontalScrollView eventsScrollView = findViewById(R.id.events_scroll);
+
             RetrofitClient.getRetrofitInstance().getAPI().getEventByCity(cityName).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 List<Event> events = response.body();
                 System.out.println(events);
+
+                //Horizontal Layout created
+                LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager);
+
+                //Events added to recycler view
                 eventAdapter = new EventAdapter(MainActivity.this, events);
                 recyclerView.setAdapter(eventAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+//                //Add recycler view to the scroll view
+//                eventsScrollView.addView(recyclerView);
+
             }
 
             @Override
