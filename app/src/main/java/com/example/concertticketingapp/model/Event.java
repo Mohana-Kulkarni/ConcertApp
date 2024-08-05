@@ -13,9 +13,9 @@ public class Event {
     private List<String> categoryList;
     private Venue venueId;
     private List<Artist> artistList;
-    private List<Tier> tierList;
+    private List<Tier> tiers;
 
-    public Event(String id, String name, String description, String dateAndTime, String eventDuration, List<String> imageUrls,List<String> categoryList, Venue venueId, List<Artist> artistList, List<Tier> tierList) {
+    public Event(String id, String name, String description, String dateAndTime, String eventDuration, List<String> imageUrls,List<String> categoryList, Venue venueId, List<Artist> artistList, List<Tier> tiers) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -25,7 +25,7 @@ public class Event {
         this.categoryList = categoryList;
         this.venueId = venueId;
         this.artistList = artistList;
-        this.tierList = tierList;
+        this.tiers = tiers;
     }
 
     public String getId() {
@@ -93,11 +93,11 @@ public class Event {
     }
 
     public List<Tier> getTierList() {
-        return tierList;
+        return tiers;
     }
 
-    public void setTierList(List<Tier> tierList) {
-        this.tierList = tierList;
+    public void setTierList(List<Tier> tiers) {
+        this.tiers = tiers;
     }
 
     public List<String> getImageUrls() {
