@@ -34,11 +34,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventCardHolder> {
     @Override
     public void onBindViewHolder(@NonNull EventCardHolder holder, int position) {
         Event event = eventList.get(position);
+        holder.setEventId(event.getId());
         holder.setImage(event.getImageUrls().get(0));
         holder.setEventName(event.getName());
         holder.setEventDate(event.getDateAndTime());
         holder.setEventVenue(event.getVenueId().getName());
-
+        holder.setCategoryGird(event.getCategoryList());
+        holder.setEventPrice("Rs." + event.getTierList().get(0).getPrice());
     }
 
     @Override
