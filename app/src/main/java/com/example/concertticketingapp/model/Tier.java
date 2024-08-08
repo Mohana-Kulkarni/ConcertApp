@@ -1,6 +1,11 @@
 package com.example.concertticketingapp.model;
 
-public class Tier {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Tier implements Parcelable {
     private String id;
     private String name;
     private int capacity;
@@ -12,6 +17,25 @@ public class Tier {
         this.capacity = capacity;
         this.price = price;
     }
+
+    protected Tier(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        capacity = in.readInt();
+        price = in.readInt();
+    }
+
+    public static final Creator<Tier> CREATOR = new Creator<Tier>() {
+        @Override
+        public Tier createFromParcel(Parcel in) {
+            return new Tier(in);
+        }
+
+        @Override
+        public Tier[] newArray(int size) {
+            return new Tier[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -43,5 +67,18 @@ public class Tier {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeInt(capacity);
+        parcel.writeInt(price);
     }
 }

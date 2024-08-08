@@ -1,8 +1,15 @@
 package com.example.concertticketingapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Event {
+public class Event implements Parcelable {
 
     private String id;
     private String name;
@@ -27,6 +34,34 @@ public class Event {
         this.artistList = artistList;
         this.tiers = tiers;
     }
+
+    protected Event(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        dateAndTime = in.readString();
+        eventDuration = in.readString();
+        imageUrls = in.createStringArrayList();
+        categoryList = in.createStringArrayList();
+        venueId = in.readParcelable(Venue.class.getClassLoader());
+        artistList = new ArrayList<>();
+        in.readList(artistList, Artist.class.getClassLoader());
+        tiers = new ArrayList<>();
+        in.readList(tiers, Tier.class.getClassLoader());
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+
 
     public String getId() {
         return id;
@@ -106,5 +141,24 @@ public class Event {
 
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeString(dateAndTime);
+        parcel.writeString(eventDuration);
+        parcel.writeStringList(imageUrls);
+        parcel.writeStringList(categoryList);
+        parcel.writeParcelable((Parcelable) venueId, i);
+        parcel.writeList(artistList);
+        parcel.writeList(tiers);
     }
 }
