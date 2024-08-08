@@ -1,10 +1,13 @@
 package com.example.concertticketingapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.concertticketingapp.adapter.CategoryCardAdapter;
 import com.example.concertticketingapp.adapter.CategoryGridViewAdapter;
 import com.example.concertticketingapp.adapter.EventAdapter;
+import com.example.concertticketingapp.adapter.EventGridAdapter;
 import com.example.concertticketingapp.adapter.PlaceGridViewAdapter;
 import com.example.concertticketingapp.integration.RetrofitClient;
 import com.example.concertticketingapp.model.Category;
@@ -13,6 +16,7 @@ import com.example.concertticketingapp.model.Place;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +27,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +42,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.PopupWindow;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,13 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     ProgressDialog mProgressDialog;
-    String cityName;
-    GridView cityGrid, categoryGrid;
+    GridView cityGrid, eventGrid;
     CardView cityCard;
+    String selectedCity;
     View cityPopup;
     EventAdapter eventAdapter;
     PopupWindow popupWindow;
     RecyclerView recyclerView;
+    TextView seeAll;
+    ArrayList<Event> events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.seeAllEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Activity_Events.class);
+                intent.putExtra("cityName", selectedCity);
+                System.out.println("In main : " + events);
+                intent.putParcelableArrayListExtra("eventList", events);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     public void displayCityList() {
@@ -123,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PlaceGridViewAdapter adapter = new PlaceGridViewAdapter(MainActivity.this, cities, cityName -> {
                     popupWindow.dismiss();
+                    selectedCity = cityName;
                     fetchEventsByCity(cityName);
                 });
                 cityGrid.setAdapter(adapter);
@@ -150,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             RetrofitClient.getRetrofitInstance().getAPI().getEventByCity(cityName).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                List<Event> events = response.body();
+                events = (ArrayList<Event>) response.body();
                 System.out.println(events);
 
                 //Horizontal Layout created
@@ -162,7 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(eventAdapter);
 
 //                //Add recycler view to the scroll view
-//                eventsScrollView.addView(recyclerView);
+                RecyclerView recyclerView = findViewById(R.id.event_recycler);
+                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2)); // 2 columns
+                recyclerView.setAdapter(new EventGridAdapter(MainActivity.this, events));
 
             }
 
@@ -178,29 +202,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void addCategoryView() {
-        HorizontalScrollView categoryScrollView = findViewById(R.id.category_scroll);
-        LinearLayout categoryContainer = new LinearLayout(this);
-        categoryContainer.setOrientation(LinearLayout.HORIZONTAL);
-        categoryScrollView.addView(categoryContainer);
+        GridView categoryGridView = findViewById(R.id.categoryGrid);
 
-        String[] categories = getResources().getStringArray(R.array.category);
-        for (String categoryName : categories) {
-            String category_img = categoryName.toLowerCase();
-            int resId = getResources().getIdentifier(category_img, "drawable", getPackageName());
-            Category category = new Category(categoryName, category_img);
-
-            LinearLayout categoryItem = (LinearLayout) getLayoutInflater().inflate(R.layout.category_add_layout, null);
-
-            ImageView categoryImg = categoryItem.findViewById(R.id.category_img);
-            TextView categoryNameView = categoryItem.findViewById(R.id.category_name);
-
-            categoryNameView.setText(category.getCategoryName());
-
-            categoryImg.setImageResource(resId);
-
-            categoryContainer.addView(categoryItem);
-
-        }
+        List<String> categories = Arrays.asList(getResources().getStringArray(R.array.category));
+        CategoryCardAdapter cardAdapter = new CategoryCardAdapter(MainActivity.this, categories);
+        categoryGridView.setAdapter(cardAdapter);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
