@@ -8,6 +8,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ public class Activity_Events extends AppCompatActivity {
     GridView eventGrid;
     TextView cityName, listSize;
 
+    CardView backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +52,22 @@ public class Activity_Events extends AppCompatActivity {
         String size = String.valueOf(eventList.size());
         listSize.setText(size + "Events");
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Activity_Events.this, MainActivity.class));
-                finish();
+                goToMainActivity();
             }
         });
+
     }
+
+    public void goToMainActivity() {
+        System.out.println("Clicked Back Button");
+        startActivity(new Intent(Activity_Events.this, MainActivity.class));
+        finish();
+    }
+
 
 
 }
