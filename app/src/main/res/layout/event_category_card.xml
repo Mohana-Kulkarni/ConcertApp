@@ -3,14 +3,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginRight="5dp"
-    app:cardCornerRadius="8dp">
+    android:elevation="20dp"
+    android:layout_marginBottom="20dp"
+    app:cardCornerRadius="5dp">
 
-    <TextView
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/event_category"
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="150dp"
+        android:elevation="-1dp"
+        android:id="@+id/category"
+        android:scaleType="fitXY"
+        android:background="@drawable/rounded_corners"
         android:text="Category"/>
 
 </androidx.cardview.widget.CardView>
