@@ -113,12 +113,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Activity_Events.class);
                 intent.putExtra("cityName", selectedCity);
-                System.out.println("In main : " + events);
                 intent.putParcelableArrayListExtra("eventList", events);
                 startActivity(intent);
                 finish();
             }
         });
+
+        setNavTab();
 
     }
 
@@ -196,6 +197,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setNavTab() {
+        binding.bottomNavigationView.setBackground(null);
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item->{
+            int id = item.getItemId();
+            switch(id) {
+                case R.id.navigation_home:
+                    break;
+
+                case R.id.navigation_events : {
+                    binding.bottomNavigationView.requestFocus();
+                    Intent intent = new Intent(MainActivity.this, Activity_Events.class);
+                    intent.putExtra("cityName", selectedCity);
+                    System.out.println("In main : " + events);
+                    intent.putParcelableArrayListExtra("eventList", events);
+                    startActivity(intent);
+                    finish();
+
+                    break;
+
+                }
+
+                case R.id.navigation_tickets:
+                    break;
+
+                case R.id.navigation_issued_vcs:
+                    break;
+
+                default:
+                    break;
+            }
+            return true;
+        });
     }
 
 
