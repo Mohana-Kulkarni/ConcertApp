@@ -14,9 +14,8 @@
         <item>Pop</item>
         <item>Rock</item>
         <item>Jazz</item>
-        <item>Hiphop</item>
         <item>Electronic</item>
-        <item>Folk</item>
+        <item>Classical</item>
         <item>Soul</item>
     </string-array>
 </resources>
