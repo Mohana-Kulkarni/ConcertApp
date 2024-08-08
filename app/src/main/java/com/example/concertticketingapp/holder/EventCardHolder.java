@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.concertticketingapp.MainActivity;
 import com.example.concertticketingapp.R;
 import com.example.concertticketingapp.adapter.CategoryGridViewAdapter;
 
@@ -20,7 +19,7 @@ import java.util.List;
 public class EventCardHolder extends RecyclerView.ViewHolder {
     ImageView image;
     TextView eventName, eventVenue, eventDate, eventPrice, eventId;
-    GridView categoryGird;
+    GridView categoryGrid;
     public EventCardHolder(@NonNull View itemView) {
         super(itemView);
         eventId = itemView.findViewById(R.id.event_id);
@@ -28,7 +27,7 @@ public class EventCardHolder extends RecyclerView.ViewHolder {
         eventName = itemView.findViewById(R.id.event_name);
         eventVenue = itemView.findViewById(R.id.event_venue);
         eventDate = itemView.findViewById(R.id.event_date);
-        categoryGird = itemView.findViewById(R.id.category_grid);
+        categoryGrid = itemView.findViewById(R.id.category_grid);
         eventPrice = itemView.findViewById(R.id.event_price);
     }
 
@@ -55,8 +54,8 @@ public class EventCardHolder extends RecyclerView.ViewHolder {
     }
 
     public void setCategoryGird(List<String> categories) {
-        CategoryGridViewAdapter adapter = new CategoryGridViewAdapter(this.categoryGird.getContext(), categories);
-        this.categoryGird.setAdapter(adapter);
+        CategoryGridViewAdapter adapter = new CategoryGridViewAdapter(this.categoryGrid.getContext(), categories);
+        this.categoryGrid.setAdapter(adapter);
     }
 
     public void setEventPrice(String eventPrice) {
@@ -66,4 +65,15 @@ public class EventCardHolder extends RecyclerView.ViewHolder {
     public void setEventId(String eventId) {
         this.eventId.setText(eventId);
     }
+
+    public void setEventData(String imageUrl, String eventName, String eventVenue, List<String> categories, int eventPrice, String eventId) {
+        setImage(imageUrl);
+        setEventId(eventId);
+        setEventName(eventName);
+        setEventVenue(eventVenue);
+        setCategoryGird(categories);
+        setEventPrice("Rs. " + eventPrice);
+    }
+
+
 }
