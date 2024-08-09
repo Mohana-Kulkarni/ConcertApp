@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.concertticketingapp.R;
+import com.example.concertticketingapp.model.OnItemClickListner;
 import com.example.concertticketingapp.model.Place;
 
 import java.util.ArrayList;
@@ -45,7 +46,4 @@ public class PlaceGridViewAdapter extends ArrayAdapter<Place> {
         return  listPlaceView;
     }
 
-    public interface OnItemClickListner {
-        void onItemClick(String cityName);
-    }
 }
