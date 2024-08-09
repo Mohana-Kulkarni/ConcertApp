@@ -21,6 +21,7 @@ public interface iConcertAppAPI {
     @GET("/events/venue")
     Call<Event> getEventByVenue(@Query("venue") String venue);
 
+
     @GET("/places/all")
     Call<List<Place>> getPlaces();
 
