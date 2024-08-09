@@ -15,15 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.concertticketingapp.adapter.EventGridAdapter;
 import com.example.concertticketingapp.databinding.ActivityEventsBinding;
 import com.example.concertticketingapp.model.Event;
+import com.example.concertticketingapp.model.OnItemClickListner;
 
 import java.util.ArrayList;
 
-public class Activity_Events extends AppCompatActivity {
+public class Activity_Events extends AppCompatActivity{
     private ActivityEventsBinding binding;
     ProgressDialog mProgressDialog;
-
-    GridView eventGrid;
     TextView cityName, listSize;
+
+    String eventId;
 
     CardView backBtn;
     @Override
@@ -35,12 +36,7 @@ public class Activity_Events extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArrayList<Event> eventList =  getIntent().getParcelableArrayListExtra("eventList");
-        System.out.println("In events : " + eventList);
         String city = intent.getStringExtra("cityName");
-
-//        eventGrid = findViewById(R.id.events_grid);
-//        EventGridAdapter gridAdapter = new EventGridAdapter(Activity_Events.this, eventList);
-//        eventGrid.setAdapter(gridAdapter);
 
         RecyclerView recyclerView = findViewById(R.id.events_grid);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
@@ -50,7 +46,7 @@ public class Activity_Events extends AppCompatActivity {
         listSize = findViewById(R.id.list_size);
         cityName.setText(city);
         String size = String.valueOf(eventList.size());
-        listSize.setText(size + "Events");
+        listSize.setText(size + " Events");
 
         backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +61,14 @@ public class Activity_Events extends AppCompatActivity {
     public void goToMainActivity() {
         System.out.println("Clicked Back Button");
         startActivity(new Intent(Activity_Events.this, MainActivity.class));
-        finish();
     }
 
 
-
+//    @Override
+//    public void onItemClick(String string) {
+//        Intent intent = new Intent(this, ActivityEventDetails.class);
+//        System.out.println("In events : " + eventId);
+//        intent.putExtra("EVENT_ID", eventId);
+//        startActivity(intent);
+//    }
 }
