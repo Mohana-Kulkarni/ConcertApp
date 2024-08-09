@@ -12,6 +12,7 @@ import com.example.concertticketingapp.adapter.PlaceGridViewAdapter;
 import com.example.concertticketingapp.integration.RetrofitClient;
 import com.example.concertticketingapp.model.Category;
 import com.example.concertticketingapp.model.Event;
+import com.example.concertticketingapp.model.OnItemClickListner;
 import com.example.concertticketingapp.model.Place;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog mProgressDialog;
     GridView cityGrid, eventGrid;
     CardView cityCard;
-    String selectedCity;
+    String selectedCity, eventId;
     View cityPopup;
     EventAdapter eventAdapter;
     PopupWindow popupWindow;
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 eventAdapter = new EventAdapter(MainActivity.this, events);
                 recyclerView.setAdapter(eventAdapter);
 
+
 //                //Add recycler view to the scroll view
                 RecyclerView recyclerView = findViewById(R.id.event_recycler);
                 recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2)); // 2 columns
@@ -215,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("In main : " + events);
                     intent.putParcelableArrayListExtra("eventList", events);
                     startActivity(intent);
-                    finish();
 
                     break;
 
