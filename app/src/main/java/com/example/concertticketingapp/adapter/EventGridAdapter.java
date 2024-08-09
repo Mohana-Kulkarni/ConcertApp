@@ -1,6 +1,7 @@
 package com.example.concertticketingapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.concertticketingapp.ActivityEventDetails;
 import com.example.concertticketingapp.R;
 import com.example.concertticketingapp.holder.EventCardHolder;
 import com.example.concertticketingapp.model.Event;
+import com.example.concertticketingapp.model.OnItemClickListner;
 
 import java.util.List;
 
 public class EventGridAdapter extends RecyclerView.Adapter<EventCardHolder> {
     private final Context context;
     private final List<Event> events;
+
 
     public EventGridAdapter(Context context, List<Event> events) {
         this.context = context;
@@ -44,6 +48,12 @@ public class EventGridAdapter extends RecyclerView.Adapter<EventCardHolder> {
                 event.getCategoryList(),
                 event.getTierList().get(0).getPrice(),
                 event.getId());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ActivityEventDetails.class);
+            intent.putExtra("EVENT_ID", event.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
