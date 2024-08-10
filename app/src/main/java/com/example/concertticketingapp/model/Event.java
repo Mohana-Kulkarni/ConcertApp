@@ -19,7 +19,7 @@ public class Event implements Parcelable {
     private List<String> imageUrls;
     private List<String> categoryList;
     private Venue venueId;
-    private List<Artist> artistList;
+    private List<Artist> artists;
     private List<Tier> tiers;
 
     public Event(String id, String name, String description, String dateAndTime, String eventDuration, List<String> imageUrls,List<String> categoryList, Venue venueId, List<Artist> artistList, List<Tier> tiers) {
@@ -31,7 +31,7 @@ public class Event implements Parcelable {
         this.imageUrls = imageUrls;
         this.categoryList = categoryList;
         this.venueId = venueId;
-        this.artistList = artistList;
+        this.artists = artistList;
         this.tiers = tiers;
     }
 
@@ -44,8 +44,8 @@ public class Event implements Parcelable {
         imageUrls = in.createStringArrayList();
         categoryList = in.createStringArrayList();
         venueId = in.readParcelable(Venue.class.getClassLoader());
-        artistList = new ArrayList<>();
-        in.readList(artistList, Artist.class.getClassLoader());
+        artists = new ArrayList<>();
+        in.readList(artists, Artist.class.getClassLoader());
         tiers = new ArrayList<>();
         in.readList(tiers, Tier.class.getClassLoader());
     }
@@ -120,11 +120,11 @@ public class Event implements Parcelable {
     }
 
     public List<Artist> getArtistList() {
-        return artistList;
+        return artists;
     }
 
     public void setArtistList(List<Artist> artistList) {
-        this.artistList = artistList;
+        this.artists = artistList;
     }
 
     public List<Tier> getTierList() {
@@ -158,7 +158,7 @@ public class Event implements Parcelable {
         parcel.writeStringList(imageUrls);
         parcel.writeStringList(categoryList);
         parcel.writeParcelable((Parcelable) venueId, i);
-        parcel.writeList(artistList);
+        parcel.writeList(artists);
         parcel.writeList(tiers);
     }
 }
