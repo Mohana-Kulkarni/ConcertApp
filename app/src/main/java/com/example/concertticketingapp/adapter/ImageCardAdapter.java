@@ -33,6 +33,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ImageCardHolder holder, int position) {
+        System.out.println(getItemCount());
         String url = imageUrls.get(position);
         holder.setImage(url);
     }
