@@ -127,11 +127,11 @@ public class Event implements Parcelable {
         this.artists = artistList;
     }
 
-    public List<Tier> getTierList() {
+    public List<Tier> getTiers() {
         return tiers;
     }
 
-    public void setTierList(List<Tier> tiers) {
+    public void setTiers(List<Tier> tiers) {
         this.tiers = tiers;
     }
 
