@@ -24,7 +24,7 @@ public class Activity_Events extends AppCompatActivity{
     ProgressDialog mProgressDialog;
     TextView cityName, listSize;
 
-    String eventId;
+    String eventId, city;
 
     CardView backBtn;
     @Override
@@ -36,7 +36,7 @@ public class Activity_Events extends AppCompatActivity{
 
         Intent intent = getIntent();
         ArrayList<Event> eventList =  getIntent().getParcelableArrayListExtra("eventList");
-        String city = intent.getStringExtra("cityName");
+        city = intent.getStringExtra("cityName");
 
         RecyclerView recyclerView = findViewById(R.id.events_grid);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
@@ -60,7 +60,9 @@ public class Activity_Events extends AppCompatActivity{
 
     public void goToMainActivity() {
         System.out.println("Clicked Back Button");
-        startActivity(new Intent(Activity_Events.this, MainActivity.class));
+        Intent intent = new Intent(Activity_Events.this, MainActivity.class);
+        intent.putExtra("cityName", city);
+        startActivity(intent);
     }
 
 
