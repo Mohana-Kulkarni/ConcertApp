@@ -46,7 +46,7 @@ public class EventGridAdapter extends RecyclerView.Adapter<EventCardHolder> {
         holder.setEventData(event.getImageUrls().get(0),
                 event.getName(), event.getVenueId().getName(),
                 event.getCategoryList(),
-                event.getTierList().get(0).getPrice(),
+                event.getTiers().get(0).getPrice(),
                 event.getId());
 
         holder.itemView.setOnClickListener(v -> {
