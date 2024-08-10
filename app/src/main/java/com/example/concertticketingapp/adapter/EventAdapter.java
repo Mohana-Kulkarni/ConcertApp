@@ -40,7 +40,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventCardHolder> {
         holder.setEventDate(event.getDateAndTime());
         holder.setEventVenue(event.getVenueId().getName());
         holder.setCategoryGird(event.getCategoryList());
-        holder.setEventPrice("Rs." + event.getTierList().get(0).getPrice());
+        holder.setEventPrice("Rs." + event.getTiers().get(0).getPrice());
     }
 
     @Override
