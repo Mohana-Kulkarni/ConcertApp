@@ -82,6 +82,7 @@ public class ActivityEventDetails extends AppCompatActivity {
         binding.eventDescription.setText(event.getDescription());
 
         // Load the image using Glide
+        System.out.println("In events : " + event.getImageUrls());
         binding.imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         ImageCardAdapter adapter = new ImageCardAdapter(this, event.getImageUrls());
         binding.imagesRecyclerView.setAdapter(adapter);
