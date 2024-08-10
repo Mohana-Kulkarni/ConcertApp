@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tier_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Tier Name" />
+
+            <TextView
+                android:id="@+id/available_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seats Available"
+                android:textSize="10sp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tier_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tier Price"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp">
+
+                <androidx.cardview.widget.CardView
+                    app:cardCornerRadius="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" >
+                            <ImageView
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/minus" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="24dp"
+                            android:layout_height="32dp">
+
+                            <TextView
+                                android:id="@+id/ticket_count"
+                                android:layout_width="24dp"
+                                android:layout_height="32dp"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textSize="20sp" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/plus" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
