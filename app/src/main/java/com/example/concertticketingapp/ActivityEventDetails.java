@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.concertticketingapp.adapter.ArtistCardAdapter;
 import com.example.concertticketingapp.adapter.EventCardDetailsAdapter;
 import com.example.concertticketingapp.adapter.ImageCardAdapter;
+import com.example.concertticketingapp.adapter.TierCardAdapter;
 import com.example.concertticketingapp.databinding.ActivityEventDetailsBinding;
 import com.example.concertticketingapp.holder.EventCardHolder;
 import com.example.concertticketingapp.holder.EventDetailsHolder;
@@ -92,12 +93,18 @@ public class ActivityEventDetails extends AppCompatActivity {
         ImageCardAdapter adapter = new ImageCardAdapter(this, event.getImageUrls());
         binding.imagesRecyclerView.setAdapter(adapter);
 
+        //Artist Recycler connected
         List<Artist> artistList = event.getArtistList();
         System.out.println(artistList);
 
         ArtistCardAdapter cardAdapter = new ArtistCardAdapter(this, artistList);
         binding.artistRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.artistRecycler.setAdapter(cardAdapter);
+
+        //Tier Recycler connected
+        TierCardAdapter tierCardAdapter = new TierCardAdapter(this, event.getTiers());
+        binding.tiersRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        binding.tiersRecycler.setAdapter(tierCardAdapter);
     }
 
 }
