@@ -11,13 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.concertticketingapp.adapter.ArtistCardAdapter;
 import com.example.concertticketingapp.adapter.EventCardDetailsAdapter;
 import com.example.concertticketingapp.adapter.ImageCardAdapter;
 import com.example.concertticketingapp.databinding.ActivityEventDetailsBinding;
 import com.example.concertticketingapp.holder.EventCardHolder;
 import com.example.concertticketingapp.holder.EventDetailsHolder;
 import com.example.concertticketingapp.integration.RetrofitClient;
+import com.example.concertticketingapp.model.Artist;
 import com.example.concertticketingapp.model.Event;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,6 +91,13 @@ public class ActivityEventDetails extends AppCompatActivity {
         binding.imagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         ImageCardAdapter adapter = new ImageCardAdapter(this, event.getImageUrls());
         binding.imagesRecyclerView.setAdapter(adapter);
+
+        List<Artist> artistList = event.getArtistList();
+        System.out.println(artistList);
+
+        ArtistCardAdapter cardAdapter = new ArtistCardAdapter(this, artistList);
+        binding.artistRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.artistRecycler.setAdapter(cardAdapter);
     }
 
 }
