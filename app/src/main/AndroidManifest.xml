@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".Activity_Events" />
         <activity android:name=".ActivityEventDetails" />
+        <activity android:name=".ActivityPurchasedTickets" />
     </application>
 
 </manifest>
