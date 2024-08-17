@@ -36,6 +36,7 @@ import com.example.concertticketingapp.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -157,10 +158,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void showPopup(View view) {
+        if (cityPopup.getParent() != null) {
+            ((ViewGroup) cityPopup.getParent()).removeView(cityPopup);
+        }
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focus = true;
+        cityPopup.setPadding(15, 15, 15, 15);
 
         popupWindow = new PopupWindow(cityPopup, width, height, focus);
         popupWindow.showAtLocation(view, Gravity.CENTER,0,0);
@@ -169,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchEventsByCity(String cityName) {
         System.out.println(cityName);
-        HorizontalScrollView eventsScrollView = findViewById(R.id.events_scroll);
 
             RetrofitClient.getRetrofitInstance().getAPI().getEventByCity(cityName).enqueue(new Callback<List<Event>>() {
             @Override
@@ -223,6 +227,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 case R.id.navigation_tickets:
+                    binding.bottomNavigationView.requestFocus();
+                    Intent intent = new Intent(MainActivity.this, ActivityPurchasedTickets.class);
+                    startActivity(intent);
+
                     break;
 
                 case R.id.navigation_issued_vcs:
