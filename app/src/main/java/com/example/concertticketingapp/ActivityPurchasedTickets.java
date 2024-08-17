@@ -44,7 +44,7 @@ public class ActivityPurchasedTickets extends AppCompatActivity {
 
 //        fetchTicketsByUserId();
         String userId = "392045287127908420";
-        RetrofitClient.getRetrofitInstance().getAPI().getTicketsByUserId(userId).enqueue(new Callback<List<Ticket>>() {
+        RetrofitClient.getRetrofitConcertInstance().getAPI().getTicketsByUserId(userId).enqueue(new Callback<List<Ticket>>() {
             @Override
             public void onResponse(Call<List<Ticket>> call, Response<List<Ticket>> response) {
                 System.out.println("In Tickets : ");
@@ -73,7 +73,7 @@ public class ActivityPurchasedTickets extends AppCompatActivity {
     }
 
     public void fetchTicketsByUserId() {
-        RetrofitClient.getRetrofitInstance().getAPI().getTicketsByUserId("392045287127908420").enqueue(new Callback<List<Ticket>>() {
+        RetrofitClient.getRetrofitConcertInstance().getAPI().getTicketsByUserId("392045287127908420").enqueue(new Callback<List<Ticket>>() {
             @Override
             public void onResponse(Call<List<Ticket>> call, Response<List<Ticket>> response) {
                 List<Ticket> tickets = response.body();

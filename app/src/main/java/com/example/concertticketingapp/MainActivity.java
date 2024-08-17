@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public void displayCityList() {
 
         System.out.println("In display");
-        RetrofitClient.getRetrofitInstance().getAPI().getPlaces().enqueue(new Callback<List<Place>>() {
+        RetrofitClient.getRetrofitConcertInstance().getAPI().getPlaces().enqueue(new Callback<List<Place>>() {
             @Override
             public void onFailure(Call call, Throwable t) {
                 Log.e("api","onFailure: " + t.getLocalizedMessage());
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     private void fetchEventsByCity(String cityName) {
         System.out.println(cityName);
 
-            RetrofitClient.getRetrofitInstance().getAPI().getEventByCity(cityName).enqueue(new Callback<List<Event>>() {
+            RetrofitClient.getRetrofitConcertInstance().getAPI().getEventByCity(cityName).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 events = (ArrayList<Event>) response.body();
@@ -226,16 +226,22 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                case R.id.navigation_tickets:
+                case R.id.navigation_tickets: {
+
                     binding.bottomNavigationView.requestFocus();
                     Intent intent = new Intent(MainActivity.this, ActivityPurchasedTickets.class);
                     startActivity(intent);
 
                     break;
+                }
+                case R.id.navigation_issued_vcs: {
 
-                case R.id.navigation_issued_vcs:
+                    binding.bottomNavigationView.requestFocus();
+                    Intent intent = new Intent(MainActivity.this, ActivityIssuedVCs.class);
+                    startActivity(intent);
+
                     break;
-
+                }
                 default:
                     break;
             }

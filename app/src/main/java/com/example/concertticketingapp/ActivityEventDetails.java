@@ -60,7 +60,7 @@ public class ActivityEventDetails extends AppCompatActivity {
     }
 
     private void loadEventDetails(String eventId) {
-        RetrofitClient.getRetrofitInstance().getAPI().getEventById(eventId).enqueue(new Callback<Event>() {
+        RetrofitClient.getRetrofitConcertInstance().getAPI().getEventById(eventId).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 Event event = response.body();
