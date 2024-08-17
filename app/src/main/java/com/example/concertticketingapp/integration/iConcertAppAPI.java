@@ -2,6 +2,7 @@ package com.example.concertticketingapp.integration;
 
 import com.example.concertticketingapp.model.Event;
 import com.example.concertticketingapp.model.Place;
+import com.example.concertticketingapp.model.Ticket;
 
 import java.util.List;
 
@@ -21,10 +22,10 @@ public interface iConcertAppAPI {
     @GET("/events/venue")
     Call<Event> getEventByVenue(@Query("venue") String venue);
 
-
     @GET("/places/all")
     Call<List<Place>> getPlaces();
 
-
+    @GET("tickets/user")
+    Call<List<Ticket>> getTicketsByUserId(@Query("user") String user);
 
 }
