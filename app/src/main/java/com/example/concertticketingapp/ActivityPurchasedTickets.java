@@ -3,6 +3,7 @@ package com.example.concertticketingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 
@@ -42,27 +43,7 @@ public class ActivityPurchasedTickets extends AppCompatActivity {
             }
         });
 
-//        fetchTicketsByUserId();
-        String userId = "392045287127908420";
-        RetrofitClient.getRetrofitConcertInstance().getAPI().getTicketsByUserId(userId).enqueue(new Callback<List<Ticket>>() {
-            @Override
-            public void onResponse(Call<List<Ticket>> call, Response<List<Ticket>> response) {
-                System.out.println("In Tickets : ");
-                List<Ticket> tickets = response.body();
-                System.out.println(tickets);
-
-                TicketCardAdapter ticketCardAdapter = new TicketCardAdapter(ActivityPurchasedTickets.this, tickets);
-                binding.ticketsRecycler.setLayoutManager(new LinearLayoutManager(ActivityPurchasedTickets.this, LinearLayoutManager.VERTICAL, false));
-                binding.ticketsRecycler.setAdapter(ticketCardAdapter);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Ticket>> call, Throwable t) {
-                Log.e("api", "onFailure: " + t.getLocalizedMessage());
-            }
-        });
+        fetchTicketsByUserId();
 
     }
 
