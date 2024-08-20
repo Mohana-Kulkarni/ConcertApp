@@ -29,10 +29,25 @@ public class CategoryCardAdapter extends ArrayAdapter<String> {
         }
         ImageView categoryImg = listCategoryView.findViewById(R.id.category);
         Context context = getContext();
-        String categoryName = getItem(position).toLowerCase() + "_img";
-        System.out.println(categoryName);
-        int resId = context.getResources().getIdentifier(categoryName, "drawable", context.getPackageName());
+        String categoryName = getItem(position);
+        String finalCategoryName = categoryName;
+        if(categoryName.equals("Electronic/Dance")) {
+            finalCategoryName ="Electronic";
+        } else if (categoryName.equals("R&B/Soul")) {
+            finalCategoryName="Soul";
+        }
+        int resId = context.getResources().getIdentifier(finalCategoryName.toLowerCase() + "_img", "drawable", context.getPackageName());
         categoryImg.setImageResource(resId);
+
+
+        listCategoryView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onItemClickListner != null) {
+                    onItemClickListner.onItemClick(categoryName);
+                }
+            }
+        });
 
         return  listCategoryView;
     }
