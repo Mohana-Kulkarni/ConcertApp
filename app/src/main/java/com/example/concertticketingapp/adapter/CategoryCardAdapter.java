@@ -12,12 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.concertticketingapp.R;
+import com.example.concertticketingapp.model.OnItemClickListner;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CategoryCardAdapter extends ArrayAdapter<String> {
-    public CategoryCardAdapter(@NonNull Context context, @NonNull List<String> objects) {
+    private OnItemClickListner onItemClickListner;
+    public CategoryCardAdapter(@NonNull Context context, @NonNull List<String> objects, OnItemClickListner onItemClickListner) {
         super(context, 0, objects);
+        this.onItemClickListner = onItemClickListner;
     }
 
     @NonNull
