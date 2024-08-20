@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.concertticketingapp.R;
+
 import java.util.List;
 
 public class QRCardAdapter extends PagerAdapter {
@@ -36,6 +38,7 @@ public class QRCardAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
         imageView.setImageBitmap(qrCodes.get(position));
+        container.setBackgroundResource(R.drawable.rounded_corners);
         container.addView(imageView);
         return imageView;
     }
