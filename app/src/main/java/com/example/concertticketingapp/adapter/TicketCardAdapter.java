@@ -60,7 +60,7 @@ public class TicketCardAdapter extends RecyclerView.Adapter<TicketCardHolder> {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             try {
                 String info = ticket.getVcId() + "," + ticket.getId() + "," + data;
-                BitMatrix bitMatrix = multiFormatWriter.encode(info, BarcodeFormat.QR_CODE, 170, 170);
+                BitMatrix bitMatrix = multiFormatWriter.encode(info, BarcodeFormat.QR_CODE, 250, 250);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                 qrCodes.add(bitmap);
