@@ -35,6 +35,27 @@ public class TierCardAdapter extends RecyclerView.Adapter<TierCardHolder> {
     public void onBindViewHolder(@NonNull TierCardHolder holder, int position) {
         Tier tier = tierList.get(position);
         holder.setTierData(tier.getName(),tier.getPrice(), tier.getCapacity());
+
+        holder.updateTicketCount();
+        holder.addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.count < 10) {
+                    holder.count++;
+                    holder.updateTicketCount();
+                }
+            }
+        });
+
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.count > 0) {
+                    holder.count--;
+                    holder.updateTicketCount();
+                }
+            }
+        });
     }
 
     @Override
