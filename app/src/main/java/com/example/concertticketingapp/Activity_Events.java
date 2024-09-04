@@ -1,5 +1,7 @@
 package com.example.concertticketingapp;
 
+import static com.example.concertticketingapp.UtilityClass.goToMainActivity;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,17 +54,10 @@ public class Activity_Events extends AppCompatActivity{
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToMainActivity();
+                goToMainActivity(Activity_Events.this);
             }
         });
 
-    }
-
-    public void goToMainActivity() {
-        System.out.println("Clicked Back Button");
-        Intent intent = new Intent(Activity_Events.this, MainActivity.class);
-        intent.putExtra("cityName", city);
-        startActivity(intent);
     }
 
 
