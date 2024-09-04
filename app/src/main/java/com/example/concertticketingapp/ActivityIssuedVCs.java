@@ -1,5 +1,7 @@
 package com.example.concertticketingapp;
 
+import static com.example.concertticketingapp.UtilityClass.goToMainActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,11 +32,10 @@ public class ActivityIssuedVCs extends AppCompatActivity {
         binding = ActivityIssuedVcsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToMainActivity();
+                goToMainActivity(ActivityIssuedVCs.this);
             }
         });
 
@@ -62,9 +63,4 @@ public class ActivityIssuedVCs extends AppCompatActivity {
         });
     }
 
-    public void goToMainActivity() {
-        System.out.println("Clicked Back Button");
-        startActivity(new Intent(ActivityIssuedVCs.this, MainActivity.class));
-        finish();
-    }
 }
