@@ -1,6 +1,14 @@
 package com.example.concertticketingapp;
 
+import static com.example.concertticketingapp.DataFetchingMethod.fetchCityList;
+import static com.example.concertticketingapp.DataFetchingMethod.fetchEventsByCity;
+import static com.example.concertticketingapp.UtilityClass.addProgressBar;
+import static com.example.concertticketingapp.UtilityClass.popupWindow;
+import static com.example.concertticketingapp.UtilityClass.removeProgressBar;
+import static com.example.concertticketingapp.UtilityClass.showPopup;
+
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,17 +17,13 @@ import com.example.concertticketingapp.adapter.CategoryGridViewAdapter;
 import com.example.concertticketingapp.adapter.EventAdapter;
 import com.example.concertticketingapp.adapter.EventGridAdapter;
 import com.example.concertticketingapp.adapter.PlaceGridViewAdapter;
-import com.example.concertticketingapp.integration.RetrofitClient;
-import com.example.concertticketingapp.model.Category;
 import com.example.concertticketingapp.model.Event;
-import com.example.concertticketingapp.model.OnItemClickListner;
 import com.example.concertticketingapp.model.Place;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Parcelable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -38,33 +42,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    ProgressDialog mProgressDialog;
     GridView cityGrid, eventGrid;
     CardView cityCard;
     String selectedCity, eventId;
     View cityPopup;
     EventAdapter eventAdapter;
-    PopupWindow popupWindow;
+
     RecyclerView recyclerView;
     TextView seeAll;
-    ArrayList<Event> events;
+    ArrayList<Event> events = new ArrayList<>();
+    List<Place> cities = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        mProgressDialog = new ProgressDialog(this);
-//        mProgressDialog.setIndeterminate(true);
-//        mProgressDialog.setMessage("Loading...");
-//        mProgressDialog.show();
-
-
 
 //        setSupportActionBar(binding.toolbar);
 
@@ -105,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
         cityCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayCityList();
-                showPopup(view);
+                displayCityPopup();
             }
         });
 
@@ -115,95 +103,59 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Activity_Events.class);
                 intent.putExtra("cityName", selectedCity);
-                intent.putParcelableArrayListExtra("eventList", events);
+                intent.putParcelableArrayListExtra("eventList", (ArrayList<? extends Parcelable>) events);
                 startActivity(intent);
                 finish();
             }
         });
 
+//        new Handler().postDelayed(this::displayCityPopup, 10);
+//        new Handler().postDelayed(this::setEventData, 10);
+
+        if(!selectedCity.isEmpty() || selectedCity != null) {
+            setEventData();
+        }
+
         setNavTab();
 
     }
 
-    public void displayCityList() {
+    public void displayCityPopup() {
 
-        System.out.println("In display");
-        RetrofitClient.getRetrofitConcertInstance().getAPI().getPlaces().enqueue(new Callback<List<Place>>() {
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                Log.e("api","onFailure: " + t.getLocalizedMessage());
-//                if (mProgressDialog.isShowing())
-//                    mProgressDialog.dismiss();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-//                if (mProgressDialog.isShowing()){
-//                    mProgressDialog.dismiss();
-//                }
-
-                List<Place> cities = (List<Place>) response.body();
-                System.out.println(cities);
-
-                PlaceGridViewAdapter adapter = new PlaceGridViewAdapter(MainActivity.this, cities, cityName -> {
-                    popupWindow.dismiss();
-                    selectedCity = cityName;
-                    fetchEventsByCity(cityName);
-                });
-                cityGrid.setAdapter(adapter);
-            }
-
-        });
-    }
-
-
-    private void showPopup(View view) {
         if (cityPopup.getParent() != null) {
             ((ViewGroup) cityPopup.getParent()).removeView(cityPopup);
         }
 
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focus = true;
-        cityPopup.setPadding(15, 15, 15, 15);
-
-        popupWindow = new PopupWindow(cityPopup, width, height, focus);
-        popupWindow.showAtLocation(view, Gravity.CENTER,0,0);
-
-    }
-
-    private void fetchEventsByCity(String cityName) {
-        System.out.println(cityName);
-
-            RetrofitClient.getRetrofitConcertInstance().getAPI().getEventByCity(cityName).enqueue(new Callback<List<Event>>() {
+        fetchCityList(this, new FetchDataCallback() {
             @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                events = (ArrayList<Event>) response.body();
-                System.out.println(events);
+            public void onEventsFetched(List<Event> events) {
+                return;
+            }
 
-                //Horizontal Layout created
-                LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-                recyclerView.setLayoutManager(layoutManager);
+            @Override
+            public void onCitiesFetched(List<Place> cityList) {
+                cities.addAll(cityList);
+                PlaceGridViewAdapter adapter = new PlaceGridViewAdapter(MainActivity.this, cities, cityName -> {
+                    popupWindow.dismiss();
+                    selectedCity = cityName;
+                    setEventData();
+                });
 
-                //Events added to recycler view
-                eventAdapter = new EventAdapter(MainActivity.this, events);
-                recyclerView.setAdapter(eventAdapter);
-
-
-//                //Add recycler view to the scroll view
-                RecyclerView recyclerView = findViewById(R.id.event_recycler);
-                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2)); // 2 columns
-                recyclerView.setAdapter(new EventGridAdapter(MainActivity.this, events));
+                cityGrid.setAdapter(adapter);
+                showPopup(cityPopup);
 
             }
 
             @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                Log.e("api", "onFailure: " + t.getLocalizedMessage());
+            public void onError(Throwable t) {
+
             }
         });
 
     }
+
+
+
 
     public void setNavTab() {
         binding.bottomNavigationView.setBackground(null);
@@ -215,13 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.navigation_events : {
-                    binding.bottomNavigationView.requestFocus();
-                    Intent intent = new Intent(MainActivity.this, Activity_Events.class);
-                    intent.putExtra("cityName", selectedCity);
-                    System.out.println("In main : " + events);
-                    intent.putParcelableArrayListExtra("eventList", events);
-                    startActivity(intent);
-
+                    UtilityClass.goToEventsActivity(this, events, selectedCity);
                     break;
 
                 }
@@ -229,16 +175,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_tickets: {
 
                     binding.bottomNavigationView.requestFocus();
-                    Intent intent = new Intent(MainActivity.this, ActivityPurchasedTickets.class);
-                    startActivity(intent);
+                   UtilityClass.goToPurchasedTicketsActivity(this);
 
                     break;
                 }
                 case R.id.navigation_issued_vcs: {
 
                     binding.bottomNavigationView.requestFocus();
-                    Intent intent = new Intent(MainActivity.this, ActivityIssuedVCs.class);
-                    startActivity(intent);
+                    UtilityClass.goToIssuedVCsActivity(this);
 
                     break;
                 }
@@ -249,6 +193,49 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setEventData() {
+
+        //Horizontal Layout created
+        fetchEventsByCity(this, selectedCity, new FetchDataCallback() {
+            @Override
+            public void onEventsFetched(List<Event> eventList) {
+                events.addAll(eventList);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager);
+
+                //Events added to recycler view
+                eventAdapter = new EventAdapter(MainActivity.this, events);
+                recyclerView.setAdapter(eventAdapter);
+
+                //Add recycler view to the scroll view
+                RecyclerView recyclerView = findViewById(R.id.event_recycler);
+                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2)); // 2 columns
+                recyclerView.setAdapter(new EventGridAdapter(MainActivity.this, events));
+            }
+
+            @Override
+            public void onCitiesFetched(List<Place> cities) {
+                return;
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.e("e", "Failed to fetch events" + t.getLocalizedMessage());
+            }
+        });
+
+    }
+
+    private void fetchEventsByCategory(String category) {
+        List<Event> categoryWiseEvents = new ArrayList<>();
+        for (Event event : events) {
+            if (event.getCategoryList().contains(category)) {
+                categoryWiseEvents.add(event);
+            }
+        }
+        UtilityClass.goToEventsActivity(this, categoryWiseEvents, selectedCity);
+
+    }
 
 
 
@@ -256,9 +243,15 @@ public class MainActivity extends AppCompatActivity {
         GridView categoryGridView = findViewById(R.id.categoryGrid);
 
         List<String> categories = Arrays.asList(getResources().getStringArray(R.array.category));
-        CategoryCardAdapter cardAdapter = new CategoryCardAdapter(MainActivity.this, categories);
+        CategoryCardAdapter cardAdapter = new CategoryCardAdapter(MainActivity.this, categories, cateogry -> {
+            fetchEventsByCategory(cateogry);
+        });
         categoryGridView.setAdapter(cardAdapter);
+        UtilityClass.setGridViewHeightBasedOnChildren(categoryGridView, 3);
+
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
