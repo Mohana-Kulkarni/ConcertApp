@@ -65,8 +65,6 @@ public class ActivityPurchasedTickets extends AppCompatActivity {
                 binding.ticketsRecycler.setAdapter(ticketCardAdapter);
 
 
-
-
             }
 
             @Override
