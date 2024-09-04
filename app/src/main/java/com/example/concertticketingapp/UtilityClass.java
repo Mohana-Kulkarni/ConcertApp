@@ -48,7 +48,10 @@ public class UtilityClass {
         gridView.requestLayout();
     }
 
-    public static void goToMainActivity(Context context, List<Event> eventList, String selectedCity, )
+    public static void goToMainActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 
     public static void goToEventsActivity(Context context, List<Event> eventList, String selectedCity) {
         Intent intent = new Intent(context, Activity_Events.class);
