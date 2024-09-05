@@ -1,9 +1,12 @@
 package com.example.concertticketingapp;
 
+import static com.example.concertticketingapp.UtilityClass.goToEventsActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -31,9 +34,12 @@ import retrofit2.Response;
 
 public class ActivityEventDetails extends AppCompatActivity {
 
-    CardView backBtn;
+    CardView backBtn, addBtn, removeBtn;
+    TextView ticketCount;
     String eventId;
     ActivityEventDetailsBinding binding;
+    private int count = 0;
+    private String city;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,23 +47,29 @@ public class ActivityEventDetails extends AppCompatActivity {
         binding = ActivityEventDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        eventId = getIntent().getStringExtra("EVENT_ID");
-        System.out.println("In details : " + eventId);
+
+        ActivityTracker.getInstance().setLastActivityName("ActivityEventDetails");
+
+        getDataFromEvents();
+
         loadEventDetails(eventId);
-        backBtn = findViewById(R.id.back_btn);
+
+        backBtn = binding.backBtn;
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToEventsActivity();
+                goToEventsActivity(ActivityEventDetails.this, null, city);
             }
         });
+
+
     }
 
-    public void goToEventsActivity() {
-        System.out.println("Clicked Back Button");
-        startActivity(new Intent(ActivityEventDetails.this, Activity_Events.class));
-        finish();
+    public void getDataFromEvents() {
+        eventId = getIntent().getStringExtra("EVENT_ID");
+        city = getIntent().getStringExtra("selectedCity");
     }
+
 
     private void loadEventDetails(String eventId) {
         RetrofitClient.getRetrofitConcertInstance().getAPI().getEventById(eventId).enqueue(new Callback<Event>() {

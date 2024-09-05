@@ -1,5 +1,7 @@
 package com.example.concertticketingapp;
 
+import static com.example.concertticketingapp.UtilityClass.goToMainActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class ActivityPurchasedTickets extends AppCompatActivity {
 
     ActivityPurchasedTicketsBinding binding;
     RecyclerView ticketQR;
+    String city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,22 +38,16 @@ public class ActivityPurchasedTickets extends AppCompatActivity {
         binding = ActivityPurchasedTicketsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        city = getIntent().getStringExtra("cityName");
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToMainActivity();
+                goToMainActivity(ActivityPurchasedTickets.this, city);
             }
         });
 
         fetchTicketsByUserId();
 
-    }
-
-    public void goToMainActivity() {
-        System.out.println("Clicked Back Button");
-        startActivity(new Intent(ActivityPurchasedTickets.this, MainActivity.class));
-        finish();
     }
 
     public void fetchTicketsByUserId() {

@@ -25,6 +25,7 @@ import retrofit2.Retrofit;
 public class ActivityIssuedVCs extends AppCompatActivity {
 
     private ActivityIssuedVcsBinding binding;
+    private String city;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +33,12 @@ public class ActivityIssuedVCs extends AppCompatActivity {
         binding = ActivityIssuedVcsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        city = getIntent().getStringExtra("cityName");
+
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToMainActivity(ActivityIssuedVCs.this);
+                goToMainActivity(ActivityIssuedVCs.this, city);
             }
         });
 

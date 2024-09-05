@@ -2,18 +2,14 @@ package com.example.concertticketingapp;
 
 import static com.example.concertticketingapp.DataFetchingMethod.fetchCityList;
 import static com.example.concertticketingapp.DataFetchingMethod.fetchEventsByCity;
-import static com.example.concertticketingapp.UtilityClass.addProgressBar;
+import static com.example.concertticketingapp.UtilityClass.goToEventsActivity;
 import static com.example.concertticketingapp.UtilityClass.popupWindow;
-import static com.example.concertticketingapp.UtilityClass.removeProgressBar;
 import static com.example.concertticketingapp.UtilityClass.showPopup;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.concertticketingapp.adapter.CategoryCardAdapter;
-import com.example.concertticketingapp.adapter.CategoryGridViewAdapter;
 import com.example.concertticketingapp.adapter.EventAdapter;
 import com.example.concertticketingapp.adapter.EventGridAdapter;
 import com.example.concertticketingapp.adapter.PlaceGridViewAdapter;
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     GridView cityGrid, eventGrid;
     CardView cityCard;
-    String selectedCity, eventId;
+    private String selectedCity;
     View cityPopup;
     EventAdapter eventAdapter;
 
@@ -68,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ActivityTracker.getInstance().setLastActivityName("MainActivity");
 
 //        setSupportActionBar(binding.toolbar);
 
@@ -101,10 +99,7 @@ public class MainActivity extends AppCompatActivity {
         binding.seeAllEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Activity_Events.class);
-                intent.putExtra("cityName", selectedCity);
-                intent.putParcelableArrayListExtra("eventList", (ArrayList<? extends Parcelable>) events);
-                startActivity(intent);
+                goToEventsActivity(MainActivity.this, events, selectedCity);
                 finish();
             }
         });
@@ -112,13 +107,16 @@ public class MainActivity extends AppCompatActivity {
 //        new Handler().postDelayed(this::displayCityPopup, 10);
 //        new Handler().postDelayed(this::setEventData, 10);
 
-        if(!selectedCity.isEmpty() || selectedCity != null) {
+        selectedCity = getIntent().getStringExtra("cityName");
+
+        if(selectedCity != null) {
             setEventData();
         }
 
         setNavTab();
 
     }
+    
 
     public void displayCityPopup() {
 
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.navigation_events : {
-                    UtilityClass.goToEventsActivity(this, events, selectedCity);
+                    UtilityClass.goToEventsActivity(MainActivity.this, events, selectedCity);
                     break;
 
                 }
@@ -175,14 +173,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_tickets: {
 
                     binding.bottomNavigationView.requestFocus();
-                   UtilityClass.goToPurchasedTicketsActivity(this);
+                    UtilityClass.goToPurchasedTicketsActivity(MainActivity.this, selectedCity);
 
                     break;
                 }
                 case R.id.navigation_issued_vcs: {
 
                     binding.bottomNavigationView.requestFocus();
-                    UtilityClass.goToIssuedVCsActivity(this);
+                    UtilityClass.goToIssuedVCsActivity(MainActivity.this, selectedCity);
 
                     break;
                 }
@@ -210,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 //Add recycler view to the scroll view
                 RecyclerView recyclerView = findViewById(R.id.event_recycler);
                 recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2)); // 2 columns
-                recyclerView.setAdapter(new EventGridAdapter(MainActivity.this, events));
+                recyclerView.setAdapter(new EventGridAdapter(MainActivity.this, events, selectedCity));
             }
 
             @Override
