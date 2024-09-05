@@ -66,12 +66,13 @@ public class EventCardHolder extends RecyclerView.ViewHolder {
         this.eventId.setText(eventId);
     }
 
-    public void setEventData(String imageUrl, String eventName, String eventVenue, List<String> categories, int eventPrice, String eventId) {
+    public void setEventData(String imageUrl, String eventName, String eventVenue, String eventDate, List<String> categories, int eventPrice, String eventId) {
         setImage(imageUrl);
         setEventId(eventId);
         setEventName(eventName);
         setEventVenue(eventVenue);
         setCategoryGird(categories);
+        setEventDate(eventDate);
         setEventPrice("Rs. " + eventPrice);
     }
 
