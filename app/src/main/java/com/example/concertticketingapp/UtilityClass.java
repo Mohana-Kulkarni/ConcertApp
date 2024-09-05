@@ -48,8 +48,9 @@ public class UtilityClass {
         gridView.requestLayout();
     }
 
-    public static void goToMainActivity(Context context) {
+    public static void goToMainActivity(Context context, String selectedCity) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("cityName", selectedCity);
         context.startActivity(intent);
     }
 
@@ -61,13 +62,15 @@ public class UtilityClass {
         context.startActivity(intent);
     }
 
-    public static void goToPurchasedTicketsActivity(Context context) {
+    public static void goToPurchasedTicketsActivity(Context context, String selectedCity) {
         Intent intent = new Intent(context, ActivityPurchasedTickets.class);
+        intent.putExtra("cityName", selectedCity);
         context.startActivity(intent);
     }
 
-    public static void goToIssuedVCsActivity(Context context) {
+    public static void goToIssuedVCsActivity(Context context, String selectedCity) {
         Intent intent = new Intent(context, ActivityIssuedVCs.class);
+        intent.putExtra("cityName", selectedCity);
         context.startActivity(intent);
     }
 
